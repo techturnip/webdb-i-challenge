@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.status(500).json({ message: 'Failed to get accounts from database' })
+      res.status(500).json({ message: 'Failed to get accounts' })
     })
 })
 // POST Request adds account to database ----------|
@@ -76,6 +76,25 @@ router.put('/:id', (req, res) => {
     .catch(err => {
       console.log(err)
       res.status(500).json({ message: 'Failed to update account' })
+    })
+})
+// DELETE Request removes an account from the db --|
+router.delete('/:id', (req, res) => {
+  const { id } = req.params
+
+  db('accounts')
+    .where({ id })
+    .del()
+    .then(deleted => {
+      if (deleted) {
+        res.json({ deleted })
+      } else {
+        res.status(404).json({ message: 'Invalid account ID' })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ message: 'Failed to remove account' })
     })
 })
 // ------------------------------------------------|
