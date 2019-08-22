@@ -50,12 +50,32 @@ router.get('/:id', (req, res) => {
       if (account) {
         res.json(account)
       } else {
-        res.status(404).json({ message: 'Invalid post ID' })
+        res.status(404).json({ message: 'Invalid account ID' })
       }
     })
     .catch(err => {
       console.log(err)
       res.status(500).json({ message: 'Failed to get account' })
+    })
+})
+// PUT Request updates an existing account's info -|
+router.put('/:id', (req, res) => {
+  const { id } = req.params
+  const changes = req.body
+
+  db('accounts')
+    .where({ id })
+    .update(changes)
+    .then(updated => {
+      if (updated) {
+        res.json({ updated })
+      } else {
+        res.status(404).json({ message: 'Invalid account ID' })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ message: 'Failed to update account' })
     })
 })
 // ------------------------------------------------|
