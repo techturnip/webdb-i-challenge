@@ -38,6 +38,26 @@ router.post('/', (req, res) => {
       res.status(500).json({ message: 'Failed to insert new account' })
     })
 })
+// GET Request returns an individual account by id |
+router.get('/:id', (req, res) => {
+  const { id } = req.params
+
+  db('accounts')
+    .where({ id })
+    .then(accounts => {
+      const account = accounts[0]
+
+      if (account) {
+        res.json(account)
+      } else {
+        res.status(404).json({ message: 'Invalid post ID' })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ message: 'Failed to get account' })
+    })
+})
 // ------------------------------------------------|
 // EXPORT ROUTER ==================================|
 // ================================================|
